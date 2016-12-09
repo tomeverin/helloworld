@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.WindowsAzure.MobileServices;
 
 using Xamarin.Forms;
 
@@ -22,9 +23,19 @@ namespace App1
             btnFalse.Clicked += BtnFalse_Clicked;
             btnNext.Clicked += BtnNext_Clicked;
 
-            SetupQuestion(MyQuiz.GetCurrentQuestion());
+            getQuestions();
 
+            
 		}
+
+        public async void getQuestions()
+        {
+            SetupAwaitData();
+            MobileServiceClient MobileService = new MobileServiceClient("https://quizexample.azurewebsites.net");
+            List<Question> list = await MobileService.GetTable<Question>().ToListAsync();
+            MyQuiz.SetQuestions(list.ToArray());
+            SetupQuestion(MyQuiz.GetCurrentQuestion());
+        }
 
         private void BtnNext_Clicked(object sender, EventArgs e)
         {
@@ -64,7 +75,7 @@ namespace App1
             btnFalse.IsEnabled = false;
             btnTrue.IsEnabled = false;
             btnNext.IsEnabled = true;
-        } 
+        }
 
         private void SetupQuestion(Question question)
         {
@@ -74,5 +85,19 @@ namespace App1
             btnTrue.IsEnabled = true;
             btnNext.IsEnabled = false;
         }
-	}
+
+
+        
+        private void SetupAwaitData()
+        {
+            lblQuestion.Text = "Please wait while the quiz questions are retrieved...";
+            lblFeedback.Text = "";
+            btnFalse.IsEnabled = false;
+            btnTrue.IsEnabled = false;
+            btnNext.IsEnabled = false;
+        }
+
+
+
+    }
 }

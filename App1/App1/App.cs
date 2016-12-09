@@ -13,6 +13,8 @@ namespace App1
 		public App ()
 		{
             MainPage = new NavigationPage(new WelcomePage());
+
+          
         }
 
 		protected override void OnStart ()

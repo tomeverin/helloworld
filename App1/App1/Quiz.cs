@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.WindowsAzure.MobileServices;
+using System.Threading.Tasks;
 
 namespace App1
 {
@@ -12,14 +14,23 @@ namespace App1
             new Question("It is healthy to eat a block of cheese everyday",false)};
         public int CurrentQuestionIndex { get; private set; } = 0;
 
+        
+
         public Quiz()
         {
-
+            
         }
 
         public Question GetCurrentQuestion()
         {
             return QuestionSet[CurrentQuestionIndex];
+        }
+
+
+        public void SetQuestions(Question[] inQuestions)
+        {
+            QuestionSet = inQuestions;
+            CurrentQuestionIndex = 0;
         }
 
         public void SelectNextQuestion()
